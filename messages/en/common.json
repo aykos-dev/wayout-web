@@ -1,0 +1,24 @@
+{
+  "app": { "title": "Outway", "tagline": "Discover the best tours in Uzbekistan" },
+  "nav": {
+    "tours": "Tours",
+    "destinations": "Destinations",
+    "about": "About"
+  },
+  "search": {
+    "placeholder": "Where to?",
+    "when": "When",
+    "who": "Travelers",
+    "submit": "Search"
+  },
+  "footer": {
+    "copyright": "© 2026 Outway",
+    "support": "Support",
+    "help": "Help center",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "language": "Language"
+}

@@ -1,0 +1,79 @@
+{
+  "home": {
+    "hero": "Keyingi sarguzashtingiz uchun ilhom",
+    "sub": "Eng yaxshi mahalliy gidlardan tanlangan sayohatlar",
+    "popular": "Mashhur manzillar",
+    "dayTrips": "Toshkentdan bir kunlik sayohatlar",
+    "weekend": "Hafta oxiri sayohatlari",
+    "multiDay": "Ko'p kunlik sarguzashtlar",
+    "seeAll": "Barchasini ko'rish",
+    "forYou": "Siz uchun",
+    "popular": "Mashhur sayohatlar"
+  },
+  "list": {
+    "title": "Sayohatlar",
+    "showMap": "Xaritani ko'rsatish",
+    "hideMap": "Xaritani yashirish",
+    "results": "{{count}} ta sayohat topildi",
+    "noResults": "Hech narsa topilmadi. Filtrlarni o'zgartiring.",
+    "loading": "Yuklanmoqda..."
+  },
+  "card": {
+    "perPerson": "/ kishi",
+    "from": "dan",
+    "seats": "{{n}} ta joy qoldi",
+    "soldOut": "Joylar tugagan"
+  },
+  "categories": {
+    "waterfall": "Sharsharalar",
+    "peak": "Cho'qqilar",
+    "lake": "Ko'llar",
+    "canyon": "Kanyonlar",
+    "cave": "G'orlar"
+  },
+  "difficulty": {
+    "label": "Qiyinlik",
+    "easy": "Oson",
+    "moderate": "O'rtacha",
+    "hard": "Qiyin",
+    "extreme": "Ekstrem"
+  },
+  "filters": {
+    "title": "Filtrlar",
+    "duration": "Davomiylik",
+    "halfDay": "Yarim kun",
+    "fullDay": "Bir kun",
+    "multiDay": "Ko'p kun",
+    "difficulty": "Qiyinlik",
+    "categories": "Manzil turi",
+    "price": "Narx",
+    "anyPrice": "Har qanday narx",
+    "search": "Sarlavha bo'yicha qidirish",
+    "priceMin": "Eng kam narx",
+    "priceMax": "Eng ko'p narx",
+    "onlyAvailable": "Faqat mavjud joylar",
+    "reset": "Tozalash",
+    "apply": "Qo'llash"
+  },
+  "detail": {
+    "from": "dan",
+    "duration": "Davomiylik",
+    "groupSize": "Guruh hajmi",
+    "distance": "Masofa",
+    "language": "Til",
+    "included": "Narxga kiradi",
+    "excluded": "Narxga kirmaydi",
+    "itinerary": "Marshrut",
+    "meetingPoint": "Yig'ilish joyi",
+    "reviews": "Sharhlar",
+    "guide": "Tashkilotchi",
+    "bookingTitle": "Sayohatni band qilish",
+    "checkAvailability": "Mavjudligini tekshirish",
+    "expressInterest": "Qiziqaman",
+    "interestSent": "Iltimosingiz qabul qilindi",
+    "viewOriginal": "Asl postni ko'rish",
+    "interestedCount": "{{n}} kishi qiziqdi",
+    "bestMonths": "Eng yaxshi oylar",
+    "weather": "Ob-havo"
+  }
+}

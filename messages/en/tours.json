@@ -1,0 +1,79 @@
+{
+  "home": {
+    "hero": "Inspiration for your next adventure",
+    "sub": "Curated tours from the region's best local guides",
+    "popular": "Popular destinations",
+    "dayTrips": "Day trips from Tashkent",
+    "weekend": "Weekend getaways",
+    "multiDay": "Multi-day adventures",
+    "seeAll": "See all",
+    "forYou": "For you",
+    "popular": "Popular tours"
+  },
+  "list": {
+    "title": "Tours",
+    "showMap": "Show map",
+    "hideMap": "Hide map",
+    "results": "{{count}} tours found",
+    "noResults": "No tours match your filters.",
+    "loading": "Loading..."
+  },
+  "card": {
+    "perPerson": "/ person",
+    "from": "from",
+    "seats": "{{n}} seats left",
+    "soldOut": "Sold out"
+  },
+  "categories": {
+    "waterfall": "Waterfalls",
+    "peak": "Peaks",
+    "lake": "Lakes",
+    "canyon": "Canyons",
+    "cave": "Caves"
+  },
+  "difficulty": {
+    "label": "Difficulty",
+    "easy": "Easy",
+    "moderate": "Moderate",
+    "hard": "Hard",
+    "extreme": "Extreme"
+  },
+  "filters": {
+    "title": "Filters",
+    "duration": "Duration",
+    "halfDay": "Half-day",
+    "fullDay": "Full day",
+    "multiDay": "Multi-day",
+    "difficulty": "Difficulty",
+    "categories": "Category",
+    "price": "Price",
+    "anyPrice": "Any price",
+    "search": "Search by title",
+    "priceMin": "Min price",
+    "priceMax": "Max price",
+    "onlyAvailable": "Only available seats",
+    "reset": "Reset",
+    "apply": "Apply"
+  },
+  "detail": {
+    "from": "from",
+    "duration": "Duration",
+    "groupSize": "Group size",
+    "distance": "Distance",
+    "language": "Language",
+    "included": "What's included",
+    "excluded": "Not included",
+    "itinerary": "Itinerary",
+    "meetingPoint": "Meeting point",
+    "reviews": "Reviews",
+    "guide": "Operator",
+    "bookingTitle": "Reserve this tour",
+    "checkAvailability": "Check availability",
+    "expressInterest": "I'm interested",
+    "interestSent": "We've recorded your interest",
+    "viewOriginal": "View original post",
+    "interestedCount": "{{n}} people interested",
+    "bestMonths": "Best months to visit",
+    "weather": "Weather"
+  }
+}

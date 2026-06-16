@@ -1,0 +1,24 @@
+{
+  "app": { "title": "Outway", "tagline": "Лучшие туры по Узбекистану" },
+  "nav": {
+    "tours": "Туры",
+    "destinations": "Направления",
+    "about": "О нас"
+  },
+  "search": {
+    "placeholder": "Куда поедем?",
+    "when": "Когда",
+    "who": "Путешественники",
+    "submit": "Найти"
+  },
+  "footer": {
+    "copyright": "© 2026 Outway",
+    "support": "Поддержка",
+    "help": "Центр помощи",
+    "contact": "Контакты",
+    "legal": "Правовое",
+    "privacy": "Конфиденциальность",
+    "terms": "Условия"
+  },
+  "language": "Язык"
+}

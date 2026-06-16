@@ -1,0 +1,24 @@
+{
+  "app": { "title": "Outway", "tagline": "O'zbekiston bo'ylab eng yaxshi sayohatlar" },
+  "nav": {
+    "tours": "Sayohatlar",
+    "destinations": "Manzillar",
+    "about": "Biz haqimizda"
+  },
+  "search": {
+    "placeholder": "Qayerga sayohat?",
+    "when": "Qachon",
+    "who": "Nechta sayohatchi",
+    "submit": "Qidirish"
+  },
+  "footer": {
+    "copyright": "© 2026 Outway",
+    "support": "Yordam",
+    "help": "Yordam markazi",
+    "contact": "Aloqa",
+    "legal": "Huquqiy",
+    "privacy": "Maxfiylik",
+    "terms": "Shartlar"
+  },
+  "language": "Til"
+}
