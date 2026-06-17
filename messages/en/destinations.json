@@ -1,0 +1,16 @@
+{
+  "title": "Destinations",
+  "subtitle": "Browse every place we run tours to",
+  "empty": "No destinations yet.",
+  "count": "{{count}} places",
+  "trackTitle": "Trail",
+  "upcomingTours": "Upcoming tours to {{name}}",
+  "noUpcomingTours": "No upcoming tours to {{name}} yet.",
+  "browseAllTours": "Browse all tours",
+  "filters": {
+    "region": "Region",
+    "category": "Category",
+    "difficulty": "Difficulty",
+    "clear": "Clear filters"
+  }
+}

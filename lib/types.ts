@@ -21,17 +21,33 @@ export interface ItineraryDay {
   body: string;
 }
 
-export interface Tour {
+export interface Place {
   id: string;
   slug: string;
-  orgId: string;
-  title: string;
+  name: string;
   descriptionMd: string | null;
-  destination: string | null;
+  region: string | null;
   locationTags: string[] | null;
   destinationCategories: DestinationCategory[] | null;
   difficulty: TourDifficulty | null;
   lengthKm: string | null;
+  meetingPointDescription: string | null;
+  meetingPointLat: string | null;
+  meetingPointLng: string | null;
+  itinerary: ItineraryDay[] | null;
+  mediaUrls: string[] | null;
+  gpxTrackUrl: string | null;
+  includes: string[] | null;
+  excludes: string[] | null;
+}
+
+export interface Tour {
+  id: string;
+  slug: string;
+  placeId: string;
+  orgId: string;
+  title: string | null;
+  descriptionMd: string | null;
   departureDate: string;
   returnDate: string;
   departureTz: string;
@@ -41,24 +57,25 @@ export interface Tour {
   priceCurrency: string;
   seatsTotal: number;
   seatsAvailable: number;
-  meetingPointDescription: string | null;
-  meetingPointLat: string | null;
-  meetingPointLng: string | null;
-  includes: string[] | null;
-  excludes: string[] | null;
   contactInfo: string | null;
   sourceMsgUrl: string | null;
-  mediaUrls: string[] | null;
-  itinerary: ItineraryDay[] | null;
   dates: { departureDate: string; returnDate: string }[] | null;
   status: TourStatus;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  place?: Place;
 }
 
 export interface TourListResponse {
   items: Tour[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface PlaceListResponse {
+  items: Place[];
   total: number;
   page: number;
   limit: number;

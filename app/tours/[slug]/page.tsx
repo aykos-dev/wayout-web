@@ -8,12 +8,11 @@ import { KeyInfoBar } from '@/components/tours/detail/key-info-bar';
 import { DescriptionBlock } from '@/components/tours/detail/description-block';
 import { IncludesList } from '@/components/tours/detail/includes-list';
 import { ItineraryTimeline } from '@/components/tours/detail/itinerary-timeline';
-import { MeetingMap } from '@/components/tours/detail/meeting-map';
+import { TourTrackMap } from '@/components/tours/detail/tour-track-map';
 import { GuideCard } from '@/components/tours/detail/guide-card';
-import { ReviewsSection } from '@/components/tours/detail/reviews-section';
 import { ViewTracker } from '@/components/tours/detail/view-tracker';
-import { BookingWidget } from '@/components/tours/detail/booking-widget';
-import { MobileCta } from '@/components/tours/detail/mobile-cta';
+import { ReviewsSection } from '@/components/tours/detail/reviews-section';
+import { ExpressInterestButton } from '@/components/tours/detail/express-interest-button';
 import { DifficultyScale } from '@/components/tours/difficulty-scale';
 import { CategoryBadge } from '@/components/tours/category-badge';
 import { Separator } from '@/components/ui/separator';
@@ -33,51 +32,54 @@ export default async function TourDetailPage({ params }: Props) {
     notFound();
   }
   if (!tour) notFound();
+  const place = tour.place;
 
-  // Fetch the operator so the guide card shows a real name + logo, and
-  // the existing reviews so the section renders something useful on first paint.
   const org = await api.getOrganization(tour.orgId).catch(() => null);
   const reviews = await api.getTourReviews(tour.id).catch(() => []);
 
-  const meetingLat = tour.meetingPointLat ? Number(tour.meetingPointLat) : null;
-  const meetingLng = tour.meetingPointLng ? Number(tour.meetingPointLng) : null;
+  const meetingLat = place?.meetingPointLat ? Number(place.meetingPointLat) : null;
+  const meetingLng = place?.meetingPointLng ? Number(place.meetingPointLng) : null;
+
+  const title = tour.title ?? place?.name ?? 'Tour';
+  const description = tour.descriptionMd ?? place?.descriptionMd ?? null;
 
   return (
     <>
       <div className="container-airbnb pt-6">
-        <h1 className="text-display-lg text-ink">{tour.title}</h1>
+        <h1 className="text-display-lg text-ink">{title}</h1>
         <div className="mt-2 flex flex-wrap items-center gap-3 text-body-sm text-muted">
           <span className="inline-flex items-center gap-1 text-ink">
             <Star className="h-4 w-4 fill-ink" /> New
           </span>
-          {tour.destination && (
+          {place?.region && (
             <>
               <span>·</span>
               <span className="inline-flex items-center gap-1">
                 <MapPin className="h-4 w-4" />
-                {tour.destination}
+                {place.region}
               </span>
             </>
           )}
-          {tour.destinationCategories && tour.destinationCategories.length > 0 && (
-            <>
-              <span>·</span>
-              <div className="flex gap-1.5">
-                {tour.destinationCategories.map((c) => (
-                  <CategoryBadge
-                    key={c}
-                    category={c}
-                    label={t(dict, 'tours', `categories.${c}`)}
-                  />
-                ))}
-              </div>
-            </>
-          )}
+          {place?.destinationCategories &&
+            place.destinationCategories.length > 0 && (
+              <>
+                <span>·</span>
+                <div className="flex gap-1.5">
+                  {place.destinationCategories.map((c) => (
+                    <CategoryBadge
+                      key={c}
+                      category={c}
+                      label={t(dict, 'tours', `categories.${c}`)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
         </div>
       </div>
 
       <div className="mt-6">
-        <PhotoGallery images={tour.mediaUrls ?? []} title={tour.title} />
+        <PhotoGallery images={place?.mediaUrls ?? []} title={title} />
       </div>
 
       <div className="container-airbnb mt-10 grid gap-12 lg:grid-cols-[1.6fr_1fr]">
@@ -85,15 +87,15 @@ export default async function TourDetailPage({ params }: Props) {
           <ViewTracker tourId={tour.id} />
           <KeyInfoBar tour={tour} lang={lang} dict={dict} />
 
-          {tour.difficulty && (
+          {place?.difficulty && (
             <DifficultyScale
-              difficulty={tour.difficulty}
-              label={t(dict, 'tours', `difficulty.${tour.difficulty}`)}
+              difficulty={place.difficulty}
+              label={t(dict, 'tours', `difficulty.${place.difficulty}`)}
               size="md"
             />
           )}
 
-          <DescriptionBlock md={tour.descriptionMd} />
+          <DescriptionBlock md={description} />
 
           <Separator />
 
@@ -101,12 +103,12 @@ export default async function TourDetailPage({ params }: Props) {
             <IncludesList
               variant="included"
               title={t(dict, 'tours', 'detail.included')}
-              items={tour.includes ?? []}
+              items={place?.includes ?? []}
             />
             <IncludesList
               variant="excluded"
               title={t(dict, 'tours', 'detail.excluded')}
-              items={tour.excludes ?? []}
+              items={place?.excludes ?? []}
             />
           </div>
 
@@ -117,13 +119,14 @@ export default async function TourDetailPage({ params }: Props) {
             title={t(dict, 'tours', 'detail.itinerary')}
           />
 
-          {meetingLat != null && meetingLng != null && (
+          {(meetingLat != null || place?.gpxTrackUrl) && (
             <>
               <Separator />
-              <MeetingMap
-                lat={meetingLat}
-                lng={meetingLng}
-                description={tour.meetingPointDescription}
+              <TourTrackMap
+                gpxUrl={place?.gpxTrackUrl ?? null}
+                meetingLat={meetingLat}
+                meetingLng={meetingLng}
+                description={place?.meetingPointDescription ?? null}
                 title={t(dict, 'tours', 'detail.meetingPoint')}
               />
             </>
@@ -132,9 +135,9 @@ export default async function TourDetailPage({ params }: Props) {
           <Separator />
 
           <ReviewsSection
-            title={t(dict, 'tours', 'detail.reviews')}
             tourId={tour.id}
             initialReviews={reviews}
+            title={t(dict, 'tours', 'detail.reviews')}
           />
 
           <Separator />
@@ -148,12 +151,30 @@ export default async function TourDetailPage({ params }: Props) {
           />
         </article>
 
-        <div className="hidden lg:block">
-          <BookingWidget tour={tour} lang={lang} dict={dict} />
-        </div>
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 space-y-4 rounded-lg border border-hairline p-5">
+            <div>
+              <p className="text-title-md text-ink">
+                {tour.finalPriceAmount}{' '}
+                <span className="text-body-sm text-muted">
+                  {tour.priceCurrency}
+                </span>
+              </p>
+              <p className="text-body-sm text-muted">per person</p>
+            </div>
+            <div className="text-body-sm text-muted">
+              {tour.seatsAvailable}/{tour.seatsTotal} seats left
+            </div>
+            {tour.seatsAvailable > 0 ? (
+              <ExpressInterestButton tourId={tour.id} />
+            ) : (
+              <p className="rounded-md bg-ink/5 px-3 py-2 text-center text-sm text-muted">
+                Sold out
+              </p>
+            )}
+          </div>
+        </aside>
       </div>
-
-      <MobileCta tour={tour} lang={lang} dict={dict} />
     </>
   );
 }

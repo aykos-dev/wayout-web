@@ -1,27 +1,23 @@
 'use client';
 
-import { Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { Heart } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
+import { cn } from '@/lib/utils';
 
 interface Props {
   tourId: string;
   className?: string;
-  defaultSaved?: boolean;
 }
 
-export function SaveHeartButton({ tourId, className, defaultSaved }: Props) {
+export function SaveHeartButton({ tourId, className }: Props) {
   const auth = useAuth();
-  const [saved, setSaved] = useState(!!defaultSaved);
-  const [pending, setPending] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!auth.token) {
-      setSaved(false);
-      return;
-    }
+    if (!auth.token) return;
     userApi
       .myLikedIds()
       .then((ids) => setSaved(ids.includes(tourId)))
@@ -31,44 +27,47 @@ export function SaveHeartButton({ tourId, className, defaultSaved }: Props) {
   const toggle = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (pending) return;
-    if (!auth.user) {
+    if (busy) return;
+    if (!auth.token) {
       try {
         await auth.requestLogin();
       } catch {
         return;
       }
     }
-    setPending(true);
-    const next = !saved;
-    setSaved(next);
+    setBusy(true);
     try {
-      if (next) await userApi.like(tourId);
-      else await userApi.unlike(tourId);
+      if (saved) {
+        await userApi.unlike(tourId);
+        setSaved(false);
+      } else {
+        await userApi.like(tourId);
+        setSaved(true);
+      }
     } catch {
-      setSaved((s) => !s);
+      // swallow — UI just reverts to prior state on next mount
     } finally {
-      setPending(false);
+      setBusy(false);
     }
   };
 
   return (
     <button
       type="button"
-      aria-label={saved ? 'Remove from saved' : 'Save'}
-      aria-pressed={saved}
       onClick={toggle}
+      aria-label={saved ? 'Unsave tour' : 'Save tour'}
       className={cn(
-        'inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/85 backdrop-blur transition-colors hover:bg-white',
+        'inline-flex size-8 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition hover:scale-105',
         className,
       )}
     >
       <Heart
         className={cn(
-          'h-4 w-4 transition-colors',
-          saved ? 'fill-primary text-primary' : 'text-ink',
+          'size-4',
+          saved
+            ? 'fill-rausch-500 text-rausch-500'
+            : 'text-ink-muted',
         )}
-        strokeWidth={2.2}
       />
     </button>
   );

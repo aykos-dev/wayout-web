@@ -1,0 +1,16 @@
+{
+  "title": "Направления",
+  "subtitle": "Все места, куда мы организуем туры",
+  "empty": "Пока нет направлений.",
+  "count": "{{count}} мест",
+  "trackTitle": "Маршрут",
+  "upcomingTours": "Ближайшие туры в «{{name}}»",
+  "noUpcomingTours": "Пока нет ближайших туров в «{{name}}».",
+  "browseAllTours": "Смотреть все туры",
+  "filters": {
+    "region": "Регион",
+    "category": "Категория",
+    "difficulty": "Сложность",
+    "clear": "Сбросить фильтры"
+  }
+}

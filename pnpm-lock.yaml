@@ -32,6 +32,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.51.1
         version: 5.100.10(react@18.3.1)
+      '@tmcw/togeojson':
+        specifier: ^7.1.2
+        version: 7.1.2
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1
@@ -661,6 +664,9 @@ packages:
     resolution: {integrity: sha512-FLaZf2RCrA/Zgp4aiu5tG3TyasTRO7aZ99skxQpr3Hg/zXOhu6yq5FZCYQ/tRaJtM9ylnoK8tFK7PolXQadv6Q==}
     peerDependencies:
       react: ^18 || ^19
+
+  '@tmcw/togeojson@7.1.2':
+    resolution: {integrity: sha512-QKnFs9DAuqqBVj4d6c69tV1Dj2TspSBTqffivoN0YoBCVdP/JY1+WaYCJbzU49RkoU5NOSOJ3jtFHCdEUVh21A==}
 
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
@@ -3126,6 +3132,8 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.100.10
       react: 18.3.1
+
+  '@tmcw/togeojson@7.1.2': {}
 
   '@tybys/wasm-util@0.10.2':
     dependencies:

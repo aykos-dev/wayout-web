@@ -20,35 +20,28 @@ interface Props {
 
 export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props) {
   const days = durationDays(tour.departureDate, tour.returnDate);
-  const difficultyLabel = tour.difficulty
-    ? t(dict, 'tours', `difficulty.${tour.difficulty}`)
+  const place = tour.place;
+  const title = tour.title ?? place?.name ?? 'Tour';
+  const difficultyLabel = place?.difficulty
+    ? t(dict, 'tours', `difficulty.${place.difficulty}`)
     : '';
 
   return (
-    <Link
-      href={`/tours/${tour.slug}`}
-      className="group flex flex-col gap-3"
-    >
+    <Link href={`/tours/${tour.slug}`} className="group flex flex-col gap-3">
       <div className="relative">
         <TourCardImage
-          src={tour.mediaUrls?.[0] ?? null}
-          alt={tour.title}
+          src={place?.mediaUrls?.[0] ?? null}
+          alt={title}
           aspect={variant === 'list' ? 'video' : 'portrait'}
           priority={priority}
         />
         {tour.seatsAvailable === 0 && (
-          <Badge
-            variant="primary"
-            className="absolute left-3 top-3"
-          >
+          <Badge variant="primary" className="absolute left-3 top-3">
             {t(dict, 'tours', 'card.soldOut')}
           </Badge>
         )}
         {tour.seatsAvailable > 0 && tour.seatsAvailable <= 5 && (
-          <Badge
-            variant="floating"
-            className="absolute left-3 top-3"
-          >
+          <Badge variant="floating" className="absolute left-3 top-3">
             {t(dict, 'tours', 'card.seats').replace(
               '{{n}}',
               String(tour.seatsAvailable),
@@ -60,10 +53,10 @@ export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props
 
       <div className="flex flex-col gap-1">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-title-md text-ink line-clamp-1">{tour.title}</h3>
-          {tour.destination && (
+          <h3 className="text-title-md text-ink line-clamp-1">{title}</h3>
+          {place?.region && (
             <span className="text-body-sm text-muted line-clamp-1">
-              {tour.destination}
+              {place.region}
             </span>
           )}
         </div>
@@ -71,16 +64,16 @@ export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props
           <span>{durationLabel(days, lang)}</span>
           <span>·</span>
           <span>{format(new Date(tour.departureDate), 'MMM d')}</span>
-          {tour.lengthKm && (
+          {place?.lengthKm && (
             <>
               <span>·</span>
-              <span>{Number(tour.lengthKm)} km</span>
+              <span>{Number(place.lengthKm)} km</span>
             </>
           )}
         </div>
-        {tour.difficulty && (
+        {place?.difficulty && (
           <DifficultyScale
-            difficulty={tour.difficulty}
+            difficulty={place.difficulty}
             label={difficultyLabel}
             size="sm"
           />

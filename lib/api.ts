@@ -1,5 +1,7 @@
 import type {
   OrganizationWithTours,
+  Place,
+  PlaceListResponse,
   Review,
   Tour,
   TourListResponse,
@@ -76,5 +78,26 @@ export const api = {
     const qs = new URLSearchParams({ limit: String(limit) });
     if (categories.length > 0) qs.set('categories', categories.join(','));
     return getJson<Tour[]>(`/tours/for-you?${qs.toString()}`);
+  },
+  listPlaces(
+    params: {
+      q?: string;
+      region?: string;
+      category?: string;
+      difficulty?: string;
+      page?: number;
+      limit?: number;
+    } = {},
+  ) {
+    const qs = toQuery(params as Record<string, unknown>);
+    return getJson<PlaceListResponse>(`/places${qs ? `?${qs}` : ''}`);
+  },
+  getPlaceBySlug(slug: string) {
+    return getJson<Place>(`/places/by-slug/${encodeURIComponent(slug)}`);
+  },
+  upcomingToursForPlace(placeId: string, limit = 12) {
+    return getJson<Tour[]>(
+      `/places/${encodeURIComponent(placeId)}/upcoming-tours?limit=${limit}`,
+    );
   },
 };

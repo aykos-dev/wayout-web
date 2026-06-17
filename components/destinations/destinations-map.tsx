@@ -4,15 +4,15 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import type { LatLngTuple } from 'leaflet';
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import type { Tour } from '@/lib/types';
-import { ensureLeafletIcons, RAUSCH_ICON } from './leaflet-fix';
+import type { Place } from '@/lib/types';
+import { ensureLeafletIcons, RAUSCH_ICON } from '@/components/tours/leaflet-fix';
 
 ensureLeafletIcons();
 
 const FALLBACK_CENTER: LatLngTuple = [41.311248, 69.281838];
 
 interface Props {
-  tours: Tour[];
+  places: Place[];
   highlightId?: string | null;
 }
 
@@ -32,16 +32,16 @@ function FitBounds({ points }: { points: LatLngTuple[] }) {
   return null;
 }
 
-export function ToursMap({ tours, highlightId }: Props) {
+export function DestinationsMap({ places, highlightId }: Props) {
   const points = useMemo<LatLngTuple[]>(
     () =>
-      tours
-        .filter((t) => t.place?.meetingPointLat && t.place?.meetingPointLng)
-        .map((t) => [
-          Number(t.place!.meetingPointLat),
-          Number(t.place!.meetingPointLng),
+      places
+        .filter((p) => p.meetingPointLat && p.meetingPointLng)
+        .map((p) => [
+          Number(p.meetingPointLat),
+          Number(p.meetingPointLng),
         ]),
-    [tours],
+    [places],
   );
   return (
     <div className="h-full w-full overflow-hidden rounded-md border border-hairline">
@@ -55,30 +55,27 @@ export function ToursMap({ tours, highlightId }: Props) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {tours.map((tour) =>
-          tour.place?.meetingPointLat && tour.place?.meetingPointLng ? (
+        {places.map((place) =>
+          place.meetingPointLat && place.meetingPointLng ? (
             <Marker
-              key={tour.id}
+              key={place.id}
               position={[
-                Number(tour.place.meetingPointLat),
-                Number(tour.place.meetingPointLng),
+                Number(place.meetingPointLat),
+                Number(place.meetingPointLng),
               ]}
               icon={RAUSCH_ICON}
-              eventHandlers={{
-                click: () => undefined,
-              }}
-              opacity={highlightId && highlightId !== tour.id ? 0.6 : 1}
+              opacity={highlightId && highlightId !== place.id ? 0.6 : 1}
             >
               <Popup>
                 <Link
-                  href={`/tours/${tour.slug}`}
+                  href={`/destinations/${place.slug}`}
                   className="text-title-sm text-ink hover:underline"
                 >
-                  {tour.title ?? tour.place.name}
+                  {place.name}
                 </Link>
-                <div className="text-body-sm text-muted">
-                  {tour.place.region ?? tour.place.name}
-                </div>
+                {place.region && (
+                  <div className="text-body-sm text-muted">{place.region}</div>
+                )}
               </Popup>
             </Marker>
           ) : null,

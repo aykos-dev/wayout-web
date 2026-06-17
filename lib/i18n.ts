@@ -1,9 +1,12 @@
 import uzCommon from '@/messages/uz/common.json';
 import uzTours from '@/messages/uz/tours.json';
+import uzDestinations from '@/messages/uz/destinations.json';
 import enCommon from '@/messages/en/common.json';
 import enTours from '@/messages/en/tours.json';
+import enDestinations from '@/messages/en/destinations.json';
 import ruCommon from '@/messages/ru/common.json';
 import ruTours from '@/messages/ru/tours.json';
+import ruDestinations from '@/messages/ru/destinations.json';
 
 export type Lang = 'uz' | 'en' | 'ru';
 export const SUPPORTED: Lang[] = ['uz', 'en', 'ru'];
@@ -11,9 +14,9 @@ export const DEFAULT_LANG: Lang =
   (process.env.NEXT_PUBLIC_DEFAULT_LANG as Lang) ?? 'uz';
 
 const DICTIONARIES = {
-  uz: { common: uzCommon, tours: uzTours },
-  en: { common: enCommon, tours: enTours },
-  ru: { common: ruCommon, tours: ruTours },
+  uz: { common: uzCommon, tours: uzTours, destinations: uzDestinations },
+  en: { common: enCommon, tours: enTours, destinations: enDestinations },
+  ru: { common: ruCommon, tours: ruTours, destinations: ruDestinations },
 } as const;
 
 export type Dictionary = (typeof DICTIONARIES)[Lang];

@@ -32,7 +32,11 @@ async function request<T>(
 }
 
 import type { AuthUser } from './auth';
-import type { DestinationCategory, Review, ReviewEligibility, Tour } from './types';
+import type {
+  DestinationCategory,
+  Review,
+  ReviewEligibility,
+} from './types';
 
 export const userApi = {
   quickRegister(payload: {
@@ -49,6 +53,8 @@ export const userApi = {
   me() {
     return request<AuthUser>('/auth/me');
   },
+
+  // --- Express / cancel interest in a tour ---
   expressInterest(tourId: string, selectedDepartureDate?: string) {
     return request<unknown>(`/tours/${tourId}/interest`, {
       method: 'POST',
@@ -60,29 +66,19 @@ export const userApi = {
   cancelInterest(tourId: string) {
     return request<unknown>(`/tours/${tourId}/interest`, { method: 'DELETE' });
   },
+
+  // --- Save (like) ---
   like(tourId: string) {
     return request<unknown>(`/tours/${tourId}/like`, { method: 'POST' });
   },
   unlike(tourId: string) {
     return request<unknown>(`/tours/${tourId}/like`, { method: 'DELETE' });
   },
-  myInterests() {
-    return request<
-      Array<{
-        id: string;
-        status: 'pending' | 'cancelled';
-        createdAt: string;
-        cancelledAt: string | null;
-        tour: Tour;
-      }>
-    >('/users/me/interests');
-  },
-  myLiked() {
-    return request<Tour[]>('/users/me/liked');
-  },
   myLikedIds() {
     return request<string[]>('/users/me/liked-ids');
   },
+
+  // --- Reviews ---
   reviewEligibility(tourId: string) {
     return request<ReviewEligibility>(`/tours/${tourId}/review/eligibility`);
   },
@@ -95,7 +91,7 @@ export const userApi = {
   },
   submitReview(
     tourId: string,
-    payload: { rating: number; body: string; photoUrls?: string[] },
+    payload: { rating: number; body?: string; photoUrls?: string[] },
   ) {
     return request<Review>(`/tours/${tourId}/review`, {
       method: 'POST',
@@ -106,11 +102,13 @@ export const userApi = {
     return request<unknown>(`/tours/${tourId}/review`, { method: 'DELETE' });
   },
 
-  // --- View tracking ---
+  // --- View tracking (anonymous, fire-and-forget) ---
   trackView(tourId: string) {
-    return request<void>(`/tours/${tourId}/view`, { method: 'POST' }, false).catch(
-      () => undefined,
-    );
+    return request<void>(
+      `/tours/${tourId}/view`,
+      { method: 'POST' },
+      false,
+    ).catch(() => undefined);
   },
 
   // --- Profile management ---
@@ -125,21 +123,5 @@ export const userApi = {
       method: 'PATCH',
       body: JSON.stringify(payload),
     });
-  },
-
-  // --- Media upload (user-auth) ---
-  async uploadFiles(files: File[]): Promise<string[]> {
-    const token = getStoredToken();
-    if (!token) throw new Error('not_authenticated');
-    const form = new FormData();
-    files.forEach((f) => form.append('files', f));
-    const res = await fetch(`${BASE}/media/upload`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: form,
-    });
-    if (!res.ok) throw new Error(`upload_failed_${res.status}`);
-    const body = (await res.json()) as { urls: string[] };
-    return body.urls;
   },
 };

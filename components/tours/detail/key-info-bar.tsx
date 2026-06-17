@@ -24,18 +24,18 @@ export function KeyInfoBar({ tour, lang, dict }: Props) {
         label={t(dict, 'tours', 'detail.groupSize')}
         value={`${tour.seatsTotal}`}
       />
-      {tour.difficulty && (
+      {tour.place?.difficulty && (
         <Cell
           icon={<Footprints className="h-5 w-5" />}
           label={t(dict, 'tours', 'detail.duration')}
-          value={t(dict, 'tours', `difficulty.${tour.difficulty}`)}
+          value={t(dict, 'tours', `difficulty.${tour.place.difficulty}`)}
         />
       )}
-      {tour.lengthKm && (
+      {tour.place?.lengthKm && (
         <Cell
           icon={<Ruler className="h-5 w-5" />}
           label={t(dict, 'tours', 'detail.distance')}
-          value={`${Number(tour.lengthKm)} km`}
+          value={`${Number(tour.place.lengthKm)} km`}
         />
       )}
     </ul>

@@ -1,0 +1,16 @@
+{
+  "title": "Manzillar",
+  "subtitle": "Biz sayohat uyushtiradigan barcha joylar",
+  "empty": "Hozircha manzillar yo'q.",
+  "count": "{{count}} ta manzil",
+  "trackTitle": "Marshrut",
+  "upcomingTours": "{{name}}ga kelayotgan sayohatlar",
+  "noUpcomingTours": "{{name}}ga hozircha sayohatlar yo'q.",
+  "browseAllTours": "Barcha sayohatlarni ko'rish",
+  "filters": {
+    "region": "Hudud",
+    "category": "Manzil turi",
+    "difficulty": "Qiyinlik",
+    "clear": "Filtrlarni tozalash"
+  }
+}
