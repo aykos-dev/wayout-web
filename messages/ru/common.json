@@ -3,13 +3,24 @@
   "nav": {
     "tours": "Туры",
     "destinations": "Направления",
+    "leaderboard": "Топ путешественники",
     "about": "О нас"
   },
   "search": {
     "placeholder": "Куда поедем?",
+    "where": "Куда",
     "when": "Когда",
+    "vibe": "Сложность",
     "who": "Путешественники",
-    "submit": "Найти"
+    "submit": "Найти",
+    "anytime": "Когда угодно",
+    "any": "Любая",
+    "tapToSearch": "Поиск туров",
+    "destinationPrompt": "Найдите место или выберите категорию",
+    "whenPrompt": "Какая продолжительность?",
+    "vibePrompt": "Уровень сложности?",
+    "clear": "Очистить",
+    "quickSearches": "Быстрый поиск"
   },
   "footer": {
     "copyright": "© 2026 Outway",

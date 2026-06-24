@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth, type AuthUser } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { usePreferences } from '@/lib/preferences';
+import { track } from '@/lib/analytics';
 import type { DestinationCategory } from '@/lib/types';
 
 type Resolver = (u: AuthUser) => void;
@@ -92,9 +93,13 @@ export function AuthModalHost() {
       });
       auth.setSession(accessToken, user);
       registeredUserRef.current = user;
+      track('sign_up', { method: 'quick_register' });
+      track('login', { method: 'quick_register' });
       setStage('preferences');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      const message = err instanceof Error ? err.message : 'Failed';
+      track('auth_register_fail', { reason: message });
+      setError(message);
     } finally {
       setPending(false);
     }
@@ -114,6 +119,10 @@ export function AuthModalHost() {
     if (budget > 0) {
       prefs.setBudget(budget);
     }
+    track('onboarding_preferences_save', {
+      categories: selectedCategories,
+      has_budget: budget > 0,
+    });
     finishOnboarding();
   };
 

@@ -28,7 +28,6 @@ interface Props {
   limit: number;
   lang: Lang;
   dict: Dictionary;
-  regions: string[];
   categories: string[];
   hasActiveFilters: boolean;
 }
@@ -40,7 +39,6 @@ export function DestinationsListWithMap({
   limit,
   lang,
   dict,
-  regions,
   categories,
   hasActiveFilters,
 }: Props) {
@@ -66,7 +64,6 @@ export function DestinationsListWithMap({
         total={total}
         onToggleMap={() => setMapVisible((v) => !v)}
         mapVisible={mapVisible}
-        regions={regions}
         categories={categories}
       />
 
@@ -101,6 +98,7 @@ export function DestinationsListWithMap({
                 dict={dict}
                 cols={mapVisible ? 2 : 4}
                 onHoverId={setHighlightId}
+                listContext="destinations_list"
               />
 
               {totalPages > 1 && (

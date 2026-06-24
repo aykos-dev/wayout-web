@@ -8,7 +8,13 @@
     "multiDay": "Многодневные приключения",
     "seeAll": "Все туры",
     "forYou": "Для вас",
-    "popular": "Популярные туры"
+    "popular": "Популярные туры",
+    "quick": {
+      "weekendPeaks": "Пики на выходные",
+      "easyDayTrips": "Лёгкие однодневные",
+      "waterfalls": "К водопадам",
+      "lakes": "К озёрам"
+    }
   },
   "list": {
     "title": "Туры",
@@ -22,7 +28,8 @@
     "perPerson": "/ человек",
     "from": "от",
     "seats": "Осталось мест: {{n}}",
-    "soldOut": "Мест нет"
+    "soldOut": "Мест нет",
+    "moreDates": "+{{n}} дат"
   },
   "categories": {
     "waterfall": "Водопады",
@@ -41,9 +48,10 @@
   "filters": {
     "title": "Фильтры",
     "duration": "Продолжительность",
-    "halfDay": "Полдня",
-    "fullDay": "Один день",
+    "oneDay": "1 день",
     "multiDay": "Несколько дней",
+    "dates": "Даты отправления",
+    "datesPlaceholder": "Любая дата",
     "difficulty": "Сложность",
     "categories": "Тип",
     "price": "Цена",
@@ -69,6 +77,7 @@
     "guide": "Организатор",
     "bookingTitle": "Забронировать тур",
     "checkAvailability": "Проверить наличие",
+    "selectDate": "Выберите дату отправления",
     "expressInterest": "Мне интересно",
     "interestSent": "Заявка принята",
     "viewOriginal": "Открыть оригинальный пост",

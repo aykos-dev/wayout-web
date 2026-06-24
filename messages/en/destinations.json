@@ -12,5 +12,18 @@
     "category": "Category",
     "difficulty": "Difficulty",
     "clear": "Clear filters"
+  },
+  "detail": {
+    "whyVisit": "Why visit",
+    "bestSeason": "Best season",
+    "regionLabel": "Region",
+    "readyToGo": "Ready to go",
+    "findDeparture": "{{n}} upcoming departures — find one that fits",
+    "seeDepartures": "See departures",
+    "bestOf": "More of {{name}}",
+    "operators": "Operators running here",
+    "operatorsHint": "Trusted local guides who run tours to this place.",
+    "oneTour": "1 upcoming tour",
+    "someTours": "{{n}} upcoming tours"
   }
 }

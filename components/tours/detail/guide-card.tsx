@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { ShieldCheck, Phone, Mail, ChevronRight } from 'lucide-react';
+import { track } from '@/lib/analytics';
 
 interface Props {
   orgId: string;
@@ -19,6 +22,7 @@ export function GuideCard({
   return (
     <Link
       href={`/organizations/${orgId}`}
+      onClick={() => track('tour_guide_click', { org_id: orgId })}
       className="group block rounded-md border border-hairline p-6 transition-colors hover:border-ink"
     >
       <h3 className="text-display-sm text-ink">{title}</h3>

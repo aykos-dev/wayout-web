@@ -11,9 +11,17 @@ interface Props {
   lang: Lang;
   dict: Dictionary;
   href?: string;
+  listContext?: string;
 }
 
-export function FeaturedSection({ titleKey, tours, lang, dict, href }: Props) {
+export function FeaturedSection({
+  titleKey,
+  tours,
+  lang,
+  dict,
+  href,
+  listContext = 'home_featured',
+}: Props) {
   if (tours.length === 0) return null;
   return (
     <section className="container-airbnb py-12 sm:py-16">
@@ -31,7 +39,13 @@ export function FeaturedSection({ titleKey, tours, lang, dict, href }: Props) {
           </Link>
         )}
       </div>
-      <TourGrid tours={tours.slice(0, 4)} lang={lang} dict={dict} cols={4} />
+      <TourGrid
+        tours={tours.slice(0, 4)}
+        lang={lang}
+        dict={dict}
+        cols={4}
+        listContext={listContext}
+      />
     </section>
   );
 }

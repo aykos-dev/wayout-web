@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { MapPin, Ruler, Footprints } from 'lucide-react';
 import type { Place } from '@/lib/types';
@@ -6,15 +8,25 @@ import { t } from '@/lib/i18n';
 import { TourCardImage } from '@/components/tours/tour-card-image';
 import { DifficultyScale } from '@/components/tours/difficulty-scale';
 import { CategoryChipRow } from './category-chip-row';
+import { track } from '@/lib/analytics';
 
 interface Props {
   place: Place;
   lang: Lang;
   dict: Dictionary;
   priority?: boolean;
+  listContext?: string;
+  position?: number;
 }
 
-export function PlaceCard({ place, lang, dict, priority }: Props) {
+export function PlaceCard({
+  place,
+  lang,
+  dict,
+  priority,
+  listContext = 'destinations_list',
+  position,
+}: Props) {
   const difficultyLabel = place.difficulty
     ? t(dict, 'tours', `difficulty.${place.difficulty}`)
     : '';
@@ -22,6 +34,15 @@ export function PlaceCard({ place, lang, dict, priority }: Props) {
   return (
     <Link
       href={`/destinations/${place.slug}`}
+      onClick={() =>
+        track('select_content', {
+          content_type: 'place',
+          item_id: place.id,
+          slug: place.slug,
+          list_context: listContext,
+          position,
+        })
+      }
       className="group flex flex-col gap-3"
       title={place.name}
     >

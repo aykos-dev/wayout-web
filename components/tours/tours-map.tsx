@@ -1,11 +1,13 @@
 'use client';
 
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import type { LatLngTuple } from 'leaflet';
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { Tour } from '@/lib/types';
-import { ensureLeafletIcons, RAUSCH_ICON } from './leaflet-fix';
+import { ensureLeafletIcons, TOUR_MARKER_ICON } from './leaflet-fix';
+import { MapTileLayers } from './map-tile-layers';
+import { track } from '@/lib/analytics';
 
 ensureLeafletIcons();
 
@@ -36,11 +38,8 @@ export function ToursMap({ tours, highlightId }: Props) {
   const points = useMemo<LatLngTuple[]>(
     () =>
       tours
-        .filter((t) => t.place?.meetingPointLat && t.place?.meetingPointLng)
-        .map((t) => [
-          Number(t.place!.meetingPointLat),
-          Number(t.place!.meetingPointLng),
-        ]),
+        .filter((t) => t.meetingPointLat && t.meetingPointLng)
+        .map((t) => [Number(t.meetingPointLat), Number(t.meetingPointLng)]),
     [tours],
   );
   return (
@@ -51,33 +50,42 @@ export function ToursMap({ tours, highlightId }: Props) {
         scrollWheelZoom
         className="h-full w-full"
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <MapTileLayers />
         {tours.map((tour) =>
-          tour.place?.meetingPointLat && tour.place?.meetingPointLng ? (
+          tour.meetingPointLat && tour.meetingPointLng ? (
             <Marker
               key={tour.id}
               position={[
-                Number(tour.place.meetingPointLat),
-                Number(tour.place.meetingPointLng),
+                Number(tour.meetingPointLat),
+                Number(tour.meetingPointLng),
               ]}
-              icon={RAUSCH_ICON}
+              icon={TOUR_MARKER_ICON}
               eventHandlers={{
-                click: () => undefined,
+                click: () =>
+                  track('tours_map_marker_click', {
+                    tour_id: tour.id,
+                    slug: tour.slug,
+                  }),
               }}
               opacity={highlightId && highlightId !== tour.id ? 0.6 : 1}
             >
               <Popup>
                 <Link
                   href={`/tours/${tour.slug}`}
+                  onClick={() =>
+                    track('select_content', {
+                      content_type: 'tour',
+                      item_id: tour.id,
+                      slug: tour.slug,
+                      list_context: 'tours_map_popup',
+                    })
+                  }
                   className="text-title-sm text-ink hover:underline"
                 >
-                  {tour.title ?? tour.place.name}
+                  {tour.title ?? tour.place?.name ?? 'Tour'}
                 </Link>
                 <div className="text-body-sm text-muted">
-                  {tour.place.region ?? tour.place.name}
+                  {tour.place?.region ?? tour.place?.name}
                 </div>
               </Popup>
             </Marker>

@@ -54,7 +54,13 @@ export function ForYouSection({ lang, dict }: Props) {
       <div className="mb-6 flex items-end justify-between">
         <h2 className="text-display-md text-ink">{title}</h2>
       </div>
-      <TourGrid tours={tours.slice(0, 12)} lang={lang} dict={dict} cols={4} />
+      <TourGrid
+        tours={tours.slice(0, 12)}
+        lang={lang}
+        dict={dict}
+        cols={4}
+        listContext="home_for_you"
+      />
     </section>
   );
 }

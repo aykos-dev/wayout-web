@@ -6,13 +6,13 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Dictionary } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
+import { track } from '@/lib/analytics';
 
 interface Props {
   dict: Dictionary;
   total: number;
   onToggleMap: () => void;
   mapVisible: boolean;
-  regions: string[];
   categories: string[];
 }
 
@@ -23,19 +23,27 @@ export function DestinationsFilterBar({
   total,
   onToggleMap,
   mapVisible,
-  regions,
   categories,
 }: Props) {
   const router = useRouter();
   const sp = useSearchParams();
 
-  const region = sp.get('region') ?? '';
   const category = sp.get('category') ?? '';
   const difficulty = sp.get('difficulty') ?? '';
   const q = sp.get('q') ?? '';
 
   const update = useCallback(
     (patch: Record<string, string | undefined>) => {
+      for (const [field, value] of Object.entries(patch)) {
+        track('destinations_filter_change', {
+          field,
+          value: value ?? undefined,
+          action: value ? 'set' : 'clear',
+        });
+      }
+      if (patch.q) {
+        track('search', { search_term: patch.q });
+      }
       const next = new URLSearchParams(sp.toString());
       for (const [k, v] of Object.entries(patch)) {
         if (!v) next.delete(k);
@@ -60,10 +68,13 @@ export function DestinationsFilterBar({
     }, 300);
   };
 
-  const activeCount = [region, category, difficulty, q].filter(Boolean).length;
-  const onClear = () => router.push('/destinations');
+  const activeCount = [category, difficulty, q].filter(Boolean).length;
+  const onClear = () => {
+    track('destinations_filter_clear');
+    router.push('/destinations');
+  };
 
-  const resultsLabel = t(dict, 'tours', 'list.results').replace(
+  const resultsLabel = t(dict, 'destinations', 'count').replace(
     '{{count}}',
     String(total),
   );
@@ -83,12 +94,6 @@ export function DestinationsFilterBar({
         </div>
 
         <div className="hidden flex-wrap items-center gap-2 sm:flex">
-          <Pill
-            value={region}
-            onChange={(v) => update({ region: v || undefined })}
-            placeholder={t(dict, 'destinations', 'filters.region')}
-            options={regions}
-          />
           <Pill
             value={category}
             onChange={(v) => update({ category: v || undefined })}
@@ -118,7 +123,12 @@ export function DestinationsFilterBar({
           <Button
             variant="ghost"
             size="sm"
-            onClick={onToggleMap}
+            onClick={() => {
+              track('destinations_view_mode_toggle', {
+                mode: mapVisible ? 'list' : 'map',
+              });
+              onToggleMap();
+            }}
             className="hidden md:inline-flex"
           >
             {mapVisible

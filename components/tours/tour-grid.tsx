@@ -7,6 +7,7 @@ interface Props {
   lang: Lang;
   dict: Dictionary;
   cols?: 2 | 3 | 4;
+  listContext?: string;
 }
 
 const COLS: Record<NonNullable<Props['cols']>, string> = {
@@ -15,7 +16,7 @@ const COLS: Record<NonNullable<Props['cols']>, string> = {
   4: 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 };
 
-export function TourGrid({ tours, lang, dict, cols = 4 }: Props) {
+export function TourGrid({ tours, lang, dict, cols = 4, listContext }: Props) {
   return (
     <div className={`grid grid-cols-1 gap-x-6 gap-y-10 ${COLS[cols]}`}>
       {tours.map((tour, i) => (
@@ -25,6 +26,8 @@ export function TourGrid({ tours, lang, dict, cols = 4 }: Props) {
           lang={lang}
           dict={dict}
           priority={i < 4}
+          listContext={listContext}
+          position={i}
         />
       ))}
     </div>

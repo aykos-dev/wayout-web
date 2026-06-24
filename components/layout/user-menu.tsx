@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogOut, Settings, User } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
+import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,7 +22,10 @@ export function UserMenu() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => auth.requestLogin().catch(() => undefined)}
+        onClick={() => {
+          track('auth_modal_open', { trigger: 'header_sign_in' });
+          auth.requestLogin().catch(() => undefined);
+        }}
       >
         <User className="mr-2 h-4 w-4" />
         Sign in
@@ -48,16 +52,25 @@ export function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href="/me">My trips</Link>
+          <Link
+            href="/me"
+            onClick={() => track('nav_click', { target: '/me', label: 'my_trips' })}
+          >
+            My trips
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link
+            href="/settings"
+            onClick={() => track('nav_click', { target: '/settings', label: 'settings' })}
+          >
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
+            track('logout');
             auth.logout();
             router.refresh();
           }}

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { format } from 'date-fns';
 import type { Tour } from '@/lib/types';
@@ -9,6 +11,7 @@ import { PriceTag } from './price-tag';
 import { DifficultyScale } from './difficulty-scale';
 import { Badge } from '@/components/ui/badge';
 import { SaveHeartButton } from './save-heart-button';
+import { track } from '@/lib/analytics';
 
 interface Props {
   tour: Tour;
@@ -16,9 +19,19 @@ interface Props {
   dict: Dictionary;
   priority?: boolean;
   variant?: 'grid' | 'list';
+  listContext?: string;
+  position?: number;
 }
 
-export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props) {
+export function TourCard({
+  tour,
+  lang,
+  dict,
+  priority,
+  variant = 'grid',
+  listContext,
+  position,
+}: Props) {
   const days = durationDays(tour.departureDate, tour.returnDate);
   const place = tour.place;
   const title = tour.title ?? place?.name ?? 'Tour';
@@ -27,7 +40,19 @@ export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props
     : '';
 
   return (
-    <Link href={`/tours/${tour.slug}`} className="group flex flex-col gap-3">
+    <Link
+      href={`/tours/${tour.slug}`}
+      onClick={() =>
+        track('select_content', {
+          content_type: 'tour',
+          item_id: tour.id,
+          slug: tour.slug,
+          list_context: listContext,
+          position,
+        })
+      }
+      className="group flex flex-col gap-3"
+    >
       <div className="relative">
         <TourCardImage
           src={place?.mediaUrls?.[0] ?? null}
@@ -64,6 +89,14 @@ export function TourCard({ tour, lang, dict, priority, variant = 'grid' }: Props
           <span>{durationLabel(days, lang)}</span>
           <span>·</span>
           <span>{format(new Date(tour.departureDate), 'MMM d')}</span>
+          {tour.dates && tour.dates.length > 1 && (
+            <span className="text-primary-active">
+              {t(dict, 'tours', 'card.moreDates').replace(
+                '{{n}}',
+                String(tour.dates.length - 1),
+              )}
+            </span>
+          )}
           {place?.lengthKm && (
             <>
               <span>·</span>

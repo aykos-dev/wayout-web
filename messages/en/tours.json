@@ -8,7 +8,13 @@
     "multiDay": "Multi-day adventures",
     "seeAll": "See all",
     "forYou": "For you",
-    "popular": "Popular tours"
+    "popular": "Popular tours",
+    "quick": {
+      "weekendPeaks": "Weekend peaks",
+      "easyDayTrips": "Easy day trips",
+      "waterfalls": "Waterfall escapes",
+      "lakes": "Lakeside getaways"
+    }
   },
   "list": {
     "title": "Tours",
@@ -22,7 +28,8 @@
     "perPerson": "/ person",
     "from": "from",
     "seats": "{{n}} seats left",
-    "soldOut": "Sold out"
+    "soldOut": "Sold out",
+    "moreDates": "+{{n}} more dates"
   },
   "categories": {
     "waterfall": "Waterfalls",
@@ -41,9 +48,10 @@
   "filters": {
     "title": "Filters",
     "duration": "Duration",
-    "halfDay": "Half-day",
-    "fullDay": "Full day",
+    "oneDay": "1 day",
     "multiDay": "Multi-day",
+    "dates": "Departure dates",
+    "datesPlaceholder": "Any date",
     "difficulty": "Difficulty",
     "categories": "Category",
     "price": "Price",
@@ -69,6 +77,7 @@
     "guide": "Operator",
     "bookingTitle": "Reserve this tour",
     "checkAvailability": "Check availability",
+    "selectDate": "Pick a departure date",
     "expressInterest": "I'm interested",
     "interestSent": "We've recorded your interest",
     "viewOriginal": "View original post",

@@ -8,7 +8,13 @@
     "multiDay": "Ko'p kunlik sarguzashtlar",
     "seeAll": "Barchasini ko'rish",
     "forYou": "Siz uchun",
-    "popular": "Mashhur sayohatlar"
+    "popular": "Mashhur sayohatlar",
+    "quick": {
+      "weekendPeaks": "Hafta oxiri cho'qqilarga",
+      "easyDayTrips": "Bir kunlik oson sayohatlar",
+      "waterfalls": "Sharsharalarga",
+      "lakes": "Ko'l bo'yiga"
+    }
   },
   "list": {
     "title": "Sayohatlar",
@@ -22,7 +28,8 @@
     "perPerson": "/ kishi",
     "from": "dan",
     "seats": "{{n}} ta joy qoldi",
-    "soldOut": "Joylar tugagan"
+    "soldOut": "Joylar tugagan",
+    "moreDates": "+{{n}} ta sana"
   },
   "categories": {
     "waterfall": "Sharsharalar",
@@ -41,9 +48,10 @@
   "filters": {
     "title": "Filtrlar",
     "duration": "Davomiylik",
-    "halfDay": "Yarim kun",
-    "fullDay": "Bir kun",
+    "oneDay": "1 kun",
     "multiDay": "Ko'p kun",
+    "dates": "Yo'lga chiqish sanalari",
+    "datesPlaceholder": "Istalgan sana",
     "difficulty": "Qiyinlik",
     "categories": "Manzil turi",
     "price": "Narx",
@@ -69,6 +77,7 @@
     "guide": "Tashkilotchi",
     "bookingTitle": "Sayohatni band qilish",
     "checkAvailability": "Mavjudligini tekshirish",
+    "selectDate": "Yo'lga chiqish sanasini tanlang",
     "expressInterest": "Qiziqaman",
     "interestSent": "Iltimosingiz qabul qilindi",
     "viewOriginal": "Asl postni ko'rish",

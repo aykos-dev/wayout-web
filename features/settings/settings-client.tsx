@@ -8,6 +8,9 @@ import { useAuth } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { usePreferences } from '@/lib/preferences';
 import { Button } from '@/components/ui/button';
+import { track } from '@/lib/analytics';
+import { NotificationPrefsCard } from './notification-prefs-card';
+import { LeaderboardPrivacyCard } from './leaderboard-privacy-card';
 
 const ALL_CATEGORIES: DestinationCategory[] = [
   'waterfall',
@@ -23,13 +26,6 @@ const CATEGORY_LABELS: Record<DestinationCategory, string> = {
   lake: 'Lake',
   canyon: 'Canyon',
   cave: 'Cave',
-};
-
-const NOTIFICATION_LABELS: Record<string, string> = {
-  priceChanged: 'Price changed',
-  seatsUpdated: 'Seats updated',
-  tourCancelled: 'Tour cancelled',
-  savedSearchAlerts: 'Saved search alerts',
 };
 
 const BUDGET_MAX = 10_000_000;
@@ -82,6 +78,11 @@ export function SettingsClient({
     setSaving(true);
     setSaveError('');
     setSaveSuccess(false);
+    const fields = [
+      fullName.trim() ? 'fullName' : null,
+      phone.trim() ? 'phone' : null,
+      email.trim() ? 'email' : null,
+    ].filter(Boolean) as string[];
     try {
       const updated = await userApi.updateProfile({
         fullName: fullName.trim() || undefined,
@@ -89,10 +90,13 @@ export function SettingsClient({
         email: email.trim() || undefined,
       });
       auth.setSession(auth.token!, updated);
+      track('settings_save', { fields });
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Failed to save');
+      const message = err instanceof Error ? err.message : 'Failed to save';
+      track('settings_save_fail', { fields, reason: message });
+      setSaveError(message);
     } finally {
       setSaving(false);
     }
@@ -100,11 +104,11 @@ export function SettingsClient({
 
   function toggleCategory(cat: DestinationCategory) {
     const current = prefs.categories;
-    if (current.includes(cat)) {
-      prefs.setCategories(current.filter((c: DestinationCategory) => c !== cat));
-    } else {
-      prefs.setCategories([...current, cat]);
-    }
+    const next = current.includes(cat)
+      ? current.filter((c: DestinationCategory) => c !== cat)
+      : [...current, cat];
+    track('preferences_categories_update', { categories: next });
+    prefs.setCategories(next);
   }
 
   if (!auth.token) {
@@ -234,54 +238,11 @@ export function SettingsClient({
         </div>
       </section>
 
-      {/* ── Notification preferences ── */}
-      <section className="mt-12 pb-16">
-        <h2 className="text-display-sm text-ink">Notifications</h2>
-        <p className="mt-1 text-body-sm text-muted">
-          Choose which notifications you want to receive.
-        </p>
+      {/* ── Telegram notification preferences (server-backed) ── */}
+      <NotificationPrefsCard />
 
-        <div className="mt-4 divide-y divide-hairline rounded-md border border-hairline">
-          {(
-            Object.keys(NOTIFICATION_LABELS) as Array<
-              keyof typeof NOTIFICATION_LABELS
-            >
-          ).map((key) => {
-            const notifKey =
-              key as keyof typeof prefs.notifications;
-            const checked = prefs.notifications[notifKey];
-            return (
-              <label
-                key={key}
-                className="flex cursor-pointer items-center justify-between px-4 py-3.5 transition-colors hover:bg-surface-strong"
-              >
-                <span className="text-body-md text-ink">
-                  {NOTIFICATION_LABELS[key]}
-                </span>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={checked}
-                  onClick={() =>
-                    prefs.setNotification(notifKey, !checked)
-                  }
-                  className={
-                    'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ' +
-                    (checked ? 'bg-ink' : 'bg-surface-strong')
-                  }
-                >
-                  <span
-                    className={
-                      'pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ' +
-                      (checked ? 'translate-x-6' : 'translate-x-1')
-                    }
-                  />
-                </button>
-              </label>
-            );
-          })}
-        </div>
-      </section>
+      {/* ── Leaderboard privacy ── */}
+      <LeaderboardPrivacyCard />
     </div>
   );
 }

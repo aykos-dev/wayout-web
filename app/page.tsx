@@ -5,6 +5,7 @@ import { HeroSearch } from '@/components/home/hero-search';
 import { CategoryStrip } from '@/components/home/category-strip';
 import { FeaturedSection } from '@/components/home/featured-section';
 import { ForYouSection } from '@/components/home/for-you-section';
+import { ContestWidget } from '@/components/home/contest-widget';
 import type { Tour } from '@/lib/types';
 
 async function safeList(params: Parameters<typeof api.listTours>[0]) {
@@ -29,6 +30,7 @@ export default async function HomePage() {
     <>
       <HeroSearch dict={dict} />
       <CategoryStrip dict={dict} />
+      <ContestWidget />
       <ForYouSection lang={lang} dict={dict} />
       <FeaturedSection
         titleKey="home.dayTrips"

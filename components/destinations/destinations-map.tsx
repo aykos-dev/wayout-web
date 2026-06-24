@@ -1,11 +1,12 @@
 'use client';
 
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import type { LatLngTuple } from 'leaflet';
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { Place } from '@/lib/types';
-import { ensureLeafletIcons, RAUSCH_ICON } from '@/components/tours/leaflet-fix';
+import { ensureLeafletIcons, TOUR_MARKER_ICON } from '@/components/tours/leaflet-fix';
+import { MapTileLayers } from '@/components/tours/map-tile-layers';
 
 ensureLeafletIcons();
 
@@ -36,11 +37,8 @@ export function DestinationsMap({ places, highlightId }: Props) {
   const points = useMemo<LatLngTuple[]>(
     () =>
       places
-        .filter((p) => p.meetingPointLat && p.meetingPointLng)
-        .map((p) => [
-          Number(p.meetingPointLat),
-          Number(p.meetingPointLng),
-        ]),
+        .filter((p) => p.latitude && p.longitude)
+        .map((p) => [Number(p.latitude), Number(p.longitude)]),
     [places],
   );
   return (
@@ -51,19 +49,13 @@ export function DestinationsMap({ places, highlightId }: Props) {
         scrollWheelZoom
         className="h-full w-full"
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <MapTileLayers />
         {places.map((place) =>
-          place.meetingPointLat && place.meetingPointLng ? (
+          place.latitude && place.longitude ? (
             <Marker
               key={place.id}
-              position={[
-                Number(place.meetingPointLat),
-                Number(place.meetingPointLng),
-              ]}
-              icon={RAUSCH_ICON}
+              position={[Number(place.latitude), Number(place.longitude)]}
+              icon={TOUR_MARKER_ICON}
               opacity={highlightId && highlightId !== place.id ? 0.6 : 1}
             >
               <Popup>

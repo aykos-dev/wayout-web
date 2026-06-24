@@ -5,12 +5,12 @@ import {
   MapContainer,
   Marker,
   Polyline,
-  TileLayer,
   useMap,
 } from 'react-leaflet';
 import L, { type LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { ensureLeafletIcons, RAUSCH_ICON } from '../leaflet-fix';
+import { ensureLeafletIcons, TOUR_MARKER_ICON } from '../leaflet-fix';
+import { MapTileLayers } from '../map-tile-layers';
 import { fetchAndParseGpx, type LatLng } from '@/lib/gpx';
 
 ensureLeafletIcons();
@@ -69,14 +69,11 @@ export function TourTrackMap({
           scrollWheelZoom
           className="h-full w-full"
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          <MapTileLayers />
           {meetingLat != null && meetingLng != null && (
             <Marker
               position={[meetingLat, meetingLng]}
-              icon={RAUSCH_ICON}
+              icon={TOUR_MARKER_ICON}
             />
           )}
           {track.length > 1 && (

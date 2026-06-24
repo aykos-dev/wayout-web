@@ -1,4 +1,4 @@
-import { Footprints, Ruler, MapPin, Mountain } from 'lucide-react';
+import { Footprints, Ruler, MapPin, Sun } from 'lucide-react';
 import type { Place } from '@/lib/types';
 import type { Dictionary } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
@@ -32,15 +32,15 @@ export function PlaceKeyInfoBar({ place, dict }: Props) {
   if (place.region) {
     cells.push({
       icon: <MapPin className="h-5 w-5" />,
-      label: t(dict, 'destinations', 'filters.region'),
+      label: t(dict, 'destinations', 'detail.regionLabel'),
       value: place.region,
     });
   }
-  if (place.meetingPointDescription) {
+  if (place.bestSeason) {
     cells.push({
-      icon: <Mountain className="h-5 w-5" />,
-      label: t(dict, 'tours', 'detail.meetingPoint'),
-      value: place.meetingPointDescription,
+      icon: <Sun className="h-5 w-5" />,
+      label: t(dict, 'destinations', 'detail.bestSeason'),
+      value: place.bestSeason,
     });
   }
 

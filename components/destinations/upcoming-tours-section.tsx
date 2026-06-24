@@ -32,7 +32,13 @@ export function UpcomingToursSection({ tours, placeName, lang, dict }: Props) {
 
       <div className="mt-8">
         {sliced.length > 0 ? (
-          <TourGrid tours={sliced} lang={lang} dict={dict} cols={4} />
+          <TourGrid
+            tours={sliced}
+            lang={lang}
+            dict={dict}
+            cols={4}
+            listContext="place_upcoming_tours"
+          />
         ) : (
           <div className="rounded-md border border-dashed border-hairline p-10 text-center">
             <p className="text-body-md text-muted">

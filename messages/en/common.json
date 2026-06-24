@@ -3,13 +3,24 @@
   "nav": {
     "tours": "Tours",
     "destinations": "Destinations",
+    "leaderboard": "Top Travelers",
     "about": "About"
   },
   "search": {
     "placeholder": "Where to?",
+    "where": "Where",
     "when": "When",
+    "vibe": "Vibe",
     "who": "Travelers",
-    "submit": "Search"
+    "submit": "Search",
+    "anytime": "Anytime",
+    "any": "Any",
+    "tapToSearch": "Search tours",
+    "destinationPrompt": "Search a place or pick a category",
+    "whenPrompt": "How long do you want to be out?",
+    "vibePrompt": "How challenging?",
+    "clear": "Clear",
+    "quickSearches": "Quick searches"
   },
   "footer": {
     "copyright": "© 2026 Outway",

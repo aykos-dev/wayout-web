@@ -5,6 +5,8 @@ import { Check, Loader2, UserPlus } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
+import { track } from '@/lib/analytics';
+import { trackEvent } from '@/lib/analytics-events';
 
 interface Props {
   tourId: string;
@@ -26,7 +28,12 @@ export function ExpressInterestButton({
 
   const submit = async () => {
     setError(null);
+    track('tour_express_interest_click', {
+      tour_id: tourId,
+      date: selectedDepartureDate,
+    });
     if (!auth.token) {
+      track('auth_modal_open', { trigger: 'interest', tour_id: tourId });
       try {
         await auth.requestLogin();
       } catch {
@@ -36,9 +43,20 @@ export function ExpressInterestButton({
     setSubmitting(true);
     try {
       await userApi.expressInterest(tourId, selectedDepartureDate);
+      track('tour_express_interest_success', {
+        tour_id: tourId,
+        date: selectedDepartureDate,
+      });
+      // Growth-funnel signal (open → view → save → interest → join).
+      trackEvent('tour_interest', { tourId, date: selectedDepartureDate });
       setDone(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to send interest');
+      const message = e instanceof Error ? e.message : 'Failed to send interest';
+      track('tour_express_interest_fail', {
+        tour_id: tourId,
+        reason: message,
+      });
+      setError(message);
     } finally {
       setSubmitting(false);
     }

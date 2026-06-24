@@ -12,5 +12,18 @@
     "category": "Manzil turi",
     "difficulty": "Qiyinlik",
     "clear": "Filtrlarni tozalash"
+  },
+  "detail": {
+    "whyVisit": "Nega borish kerak",
+    "bestSeason": "Eng yaxshi fasl",
+    "regionLabel": "Hudud",
+    "readyToGo": "Yo'lga tayyor",
+    "findDeparture": "{{n}} ta yaqinlashayotgan yo'lga chiqish — o'zingizga mosini tanlang",
+    "seeDepartures": "Sanalarni ko'rish",
+    "bestOf": "{{name}} haqida ko'proq",
+    "operators": "Bu yerga olib boruvchi operatorlar",
+    "operatorsHint": "Bu manzilga sayohatlar uyushtiradigan ishonchli mahalliy gidlar.",
+    "oneTour": "1 ta yaqinlashayotgan sayohat",
+    "someTours": "{{n}} ta yaqinlashayotgan sayohat"
   }
 }

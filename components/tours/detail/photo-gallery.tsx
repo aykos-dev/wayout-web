@@ -4,13 +4,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Mountain, Image as ImageIcon } from 'lucide-react';
 import { Lightbox } from './lightbox';
+import { track } from '@/lib/analytics';
 
 interface Props {
   images: string[];
   title: string;
+  tourId?: string;
 }
 
-export function PhotoGallery({ images, title }: Props) {
+export function PhotoGallery({ images, title, tourId }: Props) {
   const [open, setOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
@@ -18,6 +20,7 @@ export function PhotoGallery({ images, title }: Props) {
   const thumbs = images.slice(1, 5);
 
   const openAt = (i: number) => {
+    track('tour_gallery_open', { tour_id: tourId, index: i, total: images.length });
     setStartIndex(i);
     setOpen(true);
   };
@@ -82,6 +85,7 @@ export function PhotoGallery({ images, title }: Props) {
         open={open}
         initialIndex={startIndex}
         onClose={() => setOpen(false)}
+        tourId={tourId}
       />
     </section>
   );

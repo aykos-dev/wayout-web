@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { track } from '@/lib/analytics';
 
 interface Props {
   images: string[];
@@ -10,23 +11,47 @@ interface Props {
   open: boolean;
   initialIndex: number;
   onClose: () => void;
+  tourId?: string;
 }
 
-export function Lightbox({ images, alt, open, initialIndex, onClose }: Props) {
+export function Lightbox({
+  images,
+  alt,
+  open,
+  initialIndex,
+  onClose,
+  tourId,
+}: Props) {
   const [index, setIndex] = useState(initialIndex);
 
   useEffect(() => {
     if (open) setIndex(initialIndex);
   }, [open, initialIndex]);
 
-  const prev = useCallback(
-    () => setIndex((i) => (i - 1 + images.length) % images.length),
-    [images.length],
-  );
-  const next = useCallback(
-    () => setIndex((i) => (i + 1) % images.length),
-    [images.length],
-  );
+  const prev = useCallback(() => {
+    setIndex((i) => {
+      const to = (i - 1 + images.length) % images.length;
+      track('tour_gallery_navigate', {
+        tour_id: tourId,
+        direction: 'prev',
+        from: i,
+        to,
+      });
+      return to;
+    });
+  }, [images.length, tourId]);
+  const next = useCallback(() => {
+    setIndex((i) => {
+      const to = (i + 1) % images.length;
+      track('tour_gallery_navigate', {
+        tour_id: tourId,
+        direction: 'next',
+        from: i,
+        to,
+      });
+      return to;
+    });
+  }, [images.length, tourId]);
 
   useEffect(() => {
     if (!open) return;

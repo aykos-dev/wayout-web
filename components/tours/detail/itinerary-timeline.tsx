@@ -9,19 +9,18 @@ interface Props {
 
 export function ItineraryTimeline({ tour, title }: Props) {
   const days = durationDays(tour.departureDate, tour.returnDate);
-  const place = tour.place;
-  const explicit = place?.itinerary ?? [];
+  const explicit = tour.itinerary ?? [];
 
   // If the operator hasn't provided an itinerary yet, fall back to a minimal
   // skeleton built from the trip's actual start/end dates — never hardcoded.
-  const items =
+  const items: { day: number; title: string; body: string }[] =
     explicit.length > 0
       ? explicit
       : Array.from({ length: days }).map((_, i) => ({
           day: i + 1,
           title:
             i === 0
-              ? `Depart from ${place?.meetingPointDescription ?? 'meeting point'}`
+              ? `Depart from ${tour.meetingPointDescription ?? 'meeting point'}`
               : i === days - 1
                 ? 'Return'
                 : `Day ${i + 1}`,

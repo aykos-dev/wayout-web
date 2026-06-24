@@ -5,13 +5,16 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { track } from '@/lib/analytics';
+import { trackEvent } from '@/lib/analytics-events';
 
 interface Props {
   tourId: string;
   className?: string;
+  surface?: 'card' | 'detail';
 }
 
-export function SaveHeartButton({ tourId, className }: Props) {
+export function SaveHeartButton({ tourId, className, surface = 'card' }: Props) {
   const auth = useAuth();
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -29,6 +32,7 @@ export function SaveHeartButton({ tourId, className }: Props) {
     e.stopPropagation();
     if (busy) return;
     if (!auth.token) {
+      track('auth_modal_open', { trigger: 'like', tour_id: tourId });
       try {
         await auth.requestLogin();
       } catch {
@@ -38,9 +42,13 @@ export function SaveHeartButton({ tourId, className }: Props) {
     setBusy(true);
     try {
       if (saved) {
+        track('tour_unlike', { tour_id: tourId, surface });
         await userApi.unlike(tourId);
         setSaved(false);
       } else {
+        track('tour_like', { tour_id: tourId, surface });
+        // Growth-funnel signal (distinct from the Firebase 'tour_like' event).
+        trackEvent('tour_save', { tourId, surface });
         await userApi.like(tourId);
         setSaved(true);
       }

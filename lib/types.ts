@@ -26,19 +26,17 @@ export interface Place {
   slug: string;
   name: string;
   descriptionMd: string | null;
+  whyVisit: string | null;
+  bestSeason: string | null;
   region: string | null;
   locationTags: string[] | null;
   destinationCategories: DestinationCategory[] | null;
   difficulty: TourDifficulty | null;
   lengthKm: string | null;
-  meetingPointDescription: string | null;
-  meetingPointLat: string | null;
-  meetingPointLng: string | null;
-  itinerary: ItineraryDay[] | null;
+  latitude: string | null;
+  longitude: string | null;
   mediaUrls: string[] | null;
   gpxTrackUrl: string | null;
-  includes: string[] | null;
-  excludes: string[] | null;
 }
 
 export interface Tour {
@@ -64,6 +62,12 @@ export interface Tour {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  itinerary: ItineraryDay[] | null;
+  includes: string[] | null;
+  excludes: string[] | null;
+  meetingPointDescription: string | null;
+  meetingPointLat: string | null;
+  meetingPointLng: string | null;
   place?: Place;
 }
 

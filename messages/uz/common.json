@@ -3,13 +3,24 @@
   "nav": {
     "tours": "Sayohatlar",
     "destinations": "Manzillar",
+    "leaderboard": "Top sayohatchilar",
     "about": "Biz haqimizda"
   },
   "search": {
     "placeholder": "Qayerga sayohat?",
+    "where": "Qayerga",
     "when": "Qachon",
+    "vibe": "Qiyinlik",
     "who": "Nechta sayohatchi",
-    "submit": "Qidirish"
+    "submit": "Qidirish",
+    "anytime": "Istalgan vaqt",
+    "any": "Har qanday",
+    "tapToSearch": "Sayohat qidirish",
+    "destinationPrompt": "Joy yoki kategoriya tanlang",
+    "whenPrompt": "Sayohat davomiyligi qancha?",
+    "vibePrompt": "Qiyinlik darajasi?",
+    "clear": "Tozalash",
+    "quickSearches": "Tezkor qidiruvlar"
   },
   "footer": {
     "copyright": "© 2026 Outway",

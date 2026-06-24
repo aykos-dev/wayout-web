@@ -6,6 +6,7 @@ import { Star } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
+import { track } from '@/lib/analytics';
 import type { Review, ReviewEligibility } from '@/lib/types';
 
 interface Props {
@@ -105,6 +106,12 @@ function ReviewComposer({
         rating,
         body: body.trim() || undefined,
       })) as unknown as Review;
+      track('tour_review_submit', {
+        tour_id: tourId,
+        rating,
+        body_len: body.trim().length,
+        has_photos: false,
+      });
       onSubmitted({
         id: r.id,
         rating: r.rating,
@@ -115,7 +122,9 @@ function ReviewComposer({
       });
       setBody('');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Submit failed');
+      const message = e instanceof Error ? e.message : 'Submit failed';
+      track('tour_review_submit_fail', { tour_id: tourId, reason: message });
+      setError(message);
     } finally {
       setSubmitting(false);
     }

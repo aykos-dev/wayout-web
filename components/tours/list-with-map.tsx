@@ -31,6 +31,7 @@ export function ListWithMap({ tours, lang, dict }: Props) {
     <>
       <FilterBar
         dict={dict}
+        lang={lang}
         total={tours.length}
         onToggleMap={() => setMapVisible((v) => !v)}
         mapVisible={mapVisible}
@@ -66,6 +67,8 @@ export function ListWithMap({ tours, lang, dict }: Props) {
                     lang={lang}
                     dict={dict}
                     priority={i < 4}
+                    listContext="tours_list"
+                    position={i}
                   />
                 </div>
               ))}
