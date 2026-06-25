@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 interface Props {
   src: string | null;
   alt: string;
-  aspect?: 'square' | 'portrait' | 'video';
+  aspect?: 'square' | 'portrait' | 'video' | 'landscape';
   className?: string;
   priority?: boolean;
   sizes?: string;
@@ -15,6 +15,7 @@ const ASPECT: Record<NonNullable<Props['aspect']>, string> = {
   square: 'aspect-square',
   portrait: 'aspect-[4/5]',
   video: 'aspect-video',
+  landscape: 'aspect-[4/3]',
 };
 
 export function TourCardImage({

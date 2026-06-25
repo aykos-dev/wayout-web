@@ -9,30 +9,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SUPPORTED, type Lang } from '@/lib/i18n';
-import { track } from '@/lib/analytics';
-import { getStoredToken } from '@/lib/auth';
-import { userApi } from '@/lib/api-client';
+import { LANG_LABELS, setLanguage } from '@/lib/set-language';
 
-const LABELS: Record<Lang, string> = {
-  uz: "O'zbekcha",
-  en: 'English',
-  ru: 'Русский',
-};
-
-function setLang(lang: Lang, from: Lang) {
-  track('lang_change', { from, to: lang });
-  document.cookie = `booktrip.lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}`;
-  const reload = () => window.location.reload();
-  // Persist for signed-in users so their Telegram DMs follow the new language.
-  if (getStoredToken()) {
-    void userApi
-      .setLocale(lang)
-      .catch(() => undefined)
-      .finally(reload);
-  } else {
-    reload();
-  }
-}
+const LABELS = LANG_LABELS;
 
 export function LangSwitcher({ current }: { current: Lang }) {
   return (
@@ -47,7 +26,7 @@ export function LangSwitcher({ current }: { current: Lang }) {
         {SUPPORTED.map((l) => (
           <DropdownMenuItem
             key={l}
-            onClick={() => setLang(l, current)}
+            onClick={() => setLanguage(l, current)}
             className={l === current ? 'font-semibold' : ''}
           >
             {LABELS[l]}

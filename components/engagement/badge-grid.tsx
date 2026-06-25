@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import type { MyBadge } from '@/lib/api-client';
 import { BadgeIcon } from './badge-icon';
+import { BadgeInfo } from './badge-info';
 import { cn } from '@/lib/utils';
 
 /**
@@ -21,12 +22,18 @@ export function BadgeGrid({ badges }: { badges: MyBadge[] }) {
           transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.3 }}
           className="flex flex-col items-center gap-1.5 text-center"
         >
-          <BadgeIcon
-            badgeId={b.id}
+          <BadgeInfo
+            id={b.id}
+            name={b.name}
+            description={b.description}
             tier={b.tier}
             earned={b.earned}
-            size="lg"
-          />
+            earnedAt={b.earnedAt}
+            progress={b.progress}
+            target={b.target}
+          >
+            <BadgeIcon badgeId={b.id} tier={b.tier} earned={b.earned} size="lg" />
+          </BadgeInfo>
           <span
             className={cn(
               'text-caption-sm font-medium',

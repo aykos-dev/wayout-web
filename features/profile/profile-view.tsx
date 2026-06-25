@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { publicApi } from '@/lib/api-client';
 import { UserAvatar } from '@/components/engagement/user-avatar';
-import { LevelBadge } from '@/components/engagement/level-badge';
+import { LevelInfo } from '@/components/engagement/level-info';
 import { BadgeIcon } from '@/components/engagement/badge-icon';
+import { BadgeInfo } from '@/components/engagement/badge-info';
 import { XpProgressBar } from '@/components/engagement/xp-progress-bar';
 
 /** Public read-only profile for any user id. */
@@ -45,7 +46,13 @@ export function ProfileView({ userId }: { userId: string }) {
           {data.fullName ?? 'Anonymous Explorer'}
         </h1>
         <div className="mt-2 flex justify-center">
-          <LevelBadge level={data.level} name={data.name} />
+          <LevelInfo
+            level={data.level}
+            name={data.name}
+            xp={data.xp}
+            currentLevelXp={data.currentLevelXp}
+            nextLevelXp={data.nextLevelXp}
+          />
         </div>
         <div className="mt-5">
           <XpProgressBar
@@ -73,9 +80,16 @@ export function ProfileView({ userId }: { userId: string }) {
                 viewport={{ once: true }}
                 transition={{ delay: Math.min(i * 0.05, 0.4) }}
                 className="flex flex-col items-center gap-1.5 text-center"
-                title={b.description}
               >
-                <BadgeIcon badgeId={b.id} tier={b.tier} size="lg" />
+                <BadgeInfo
+                  id={b.id}
+                  name={b.name}
+                  description={b.description}
+                  tier={b.tier}
+                  earnedAt={b.earnedAt}
+                >
+                  <BadgeIcon badgeId={b.id} tier={b.tier} size="lg" />
+                </BadgeInfo>
                 <span className="text-caption-sm font-medium text-ink">
                   {b.name}
                 </span>

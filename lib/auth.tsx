@@ -19,6 +19,7 @@ export interface AuthUser {
   fullName: string | null;
   phone: string | null;
   email: string | null;
+  avatarUrl?: string | null;
 }
 
 interface AuthCallbacks {
@@ -28,6 +29,8 @@ interface AuthCallbacks {
 interface AuthState {
   token: string | null;
   user: AuthUser | null;
+  /** False until the session has been read from localStorage on mount. */
+  ready: boolean;
   setSession: (token: string, user: AuthUser) => void;
   logout: () => void;
   /** Set by the AuthModal so any component can prompt sign-in. */
@@ -41,6 +44,7 @@ const Ctx = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [ready, setReady] = useState(false);
 
   // The modal opener lives in a ref so re-registering it from the modal host
   // does not produce a state update and trigger an infinite render loop.
@@ -64,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         /* ignore */
       }
     }
+    setReady(true);
   }, []);
 
   const setSession = useCallback((nextToken: string, nextUser: AuthUser) => {
@@ -98,12 +103,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       token,
       user,
+      ready,
       setSession,
       logout,
       requestLogin,
       _register: register,
     }),
-    [token, user, setSession, logout, requestLogin, register],
+    [token, user, ready, setSession, logout, requestLogin, register],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

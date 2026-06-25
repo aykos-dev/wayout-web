@@ -161,6 +161,7 @@ export const userApi = {
     email?: string;
     preferredDestinations?: DestinationCategory[];
     preferredPriceMax?: number;
+    avatarUrl?: string;
   }) {
     return request<AuthUser>('/users/me', {
       method: 'PATCH',

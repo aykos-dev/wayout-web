@@ -5,23 +5,31 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const CURRENCY_FORMATS: Record<string, Intl.NumberFormatOptions> = {
-  UZS: { style: 'currency', currency: 'UZS', maximumFractionDigits: 0 },
-  USD: { style: 'currency', currency: 'USD', maximumFractionDigits: 0 },
-  EUR: { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 },
-};
+/** Thousands separator per language. */
+const GROUP_SEP: Record<string, string> = { uz: ' ', ru: ' ', en: ',' };
+/** Localized label for UZS (the only suffix currency we serve). */
+const UZS_LABEL: Record<string, string> = { uz: "so'm", ru: 'сум', en: 'UZS' };
 
+/**
+ * Formats a price deterministically — the SAME output in Node (SSR) and the
+ * browser, regardless of their ICU data. We deliberately avoid
+ * `Intl.NumberFormat` with locale-specific currency display (e.g. 'uz-Latn'),
+ * which renders differently across environments and caused hydration mismatches.
+ */
 export function formatPrice(value: number | string, currency: string, lang = 'uz') {
   const num = typeof value === 'string' ? Number(value) : value;
   if (!Number.isFinite(num)) return `${value} ${currency}`;
-  try {
-    return new Intl.NumberFormat(
-      lang === 'uz' ? 'uz-Latn' : lang,
-      CURRENCY_FORMATS[currency] ?? { style: 'currency', currency },
-    ).format(num);
-  } catch {
-    return `${num.toLocaleString()} ${currency}`;
-  }
+  const rounded = Math.round(num);
+  const sep = GROUP_SEP[lang] ?? ' ';
+  // Pure string grouping — no Intl, so server and client always agree.
+  const grouped = Math.abs(rounded)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+  const sign = rounded < 0 ? '-' : '';
+  if (currency === 'USD') return `${sign}$${grouped}`;
+  if (currency === 'EUR') return `${sign}€${grouped}`;
+  if (currency === 'UZS') return `${sign}${grouped} ${UZS_LABEL[lang] ?? "so'm"}`;
+  return `${sign}${grouped} ${currency}`;
 }
 
 export function durationDays(start: string, end: string): number {

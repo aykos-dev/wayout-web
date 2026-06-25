@@ -29,6 +29,8 @@ export interface Place {
   whyVisit: string | null;
   bestSeason: string | null;
   region: string | null;
+  regionId?: string | null;
+  isTop?: boolean;
   locationTags: string[] | null;
   destinationCategories: DestinationCategory[] | null;
   difficulty: TourDifficulty | null;
@@ -37,6 +39,11 @@ export interface Place {
   longitude: string | null;
   mediaUrls: string[] | null;
   gpxTrackUrl: string | null;
+}
+
+/** A place returned by the "top destinations" rail, with its upcoming-tour count. */
+export interface TopPlace extends Place {
+  tourCount: number;
 }
 
 export interface Tour {

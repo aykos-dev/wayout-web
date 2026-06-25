@@ -6,7 +6,8 @@ import { CategoryStrip } from '@/components/home/category-strip';
 import { FeaturedSection } from '@/components/home/featured-section';
 import { ForYouSection } from '@/components/home/for-you-section';
 import { ContestWidget } from '@/components/home/contest-widget';
-import type { Tour } from '@/lib/types';
+import { TopDestinations } from '@/components/home/top-destinations';
+import type { TopPlace, Tour } from '@/lib/types';
 
 async function safeList(params: Parameters<typeof api.listTours>[0]) {
   try {
@@ -16,12 +17,20 @@ async function safeList(params: Parameters<typeof api.listTours>[0]) {
   }
 }
 
+async function safeTopPlaces(): Promise<TopPlace[]> {
+  try {
+    return await api.topPlaces(8);
+  } catch {
+    return [];
+  }
+}
+
 export default async function HomePage() {
   const lang = getLangFromCookies();
   const dict = getDict(lang);
 
-  const [dayTrips, weekend, multiDay] = await Promise.all([
-    safeList({ durationMax: 1, sort: 'departure_asc', limit: 8 }),
+  const [topDestinations, weekend, multiDay] = await Promise.all([
+    safeTopPlaces(),
     safeList({ durationMax: 3, sort: 'departure_asc', limit: 8 }),
     safeList({ sort: 'popular', limit: 8 }),
   ]);
@@ -31,14 +40,8 @@ export default async function HomePage() {
       <HeroSearch dict={dict} />
       <CategoryStrip dict={dict} />
       <ContestWidget />
+      <TopDestinations places={topDestinations} dict={dict} />
       <ForYouSection lang={lang} dict={dict} />
-      <FeaturedSection
-        titleKey="home.dayTrips"
-        tours={dayTrips}
-        lang={lang}
-        dict={dict}
-        href="/tours?duration=day"
-      />
       <FeaturedSection
         titleKey="home.weekend"
         tours={weekend}

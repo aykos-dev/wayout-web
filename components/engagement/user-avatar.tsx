@@ -1,6 +1,11 @@
 import { cn } from '@/lib/utils';
 
-const SIZES = { md: 'size-12 text-title-sm', lg: 'size-20 text-2xl', xl: 'size-24 text-3xl' } as const;
+const SIZES = {
+  sm: 'size-7 text-caption-sm',
+  md: 'size-12 text-title-sm',
+  lg: 'size-20 text-2xl',
+  xl: 'size-24 text-3xl',
+} as const;
 
 export function UserAvatar({
   name,

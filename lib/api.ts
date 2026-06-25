@@ -3,6 +3,7 @@ import type {
   Place,
   PlaceListResponse,
   Review,
+  TopPlace,
   Tour,
   TourListResponse,
 } from './types';
@@ -94,6 +95,9 @@ export const api = {
   },
   getPlaceBySlug(slug: string) {
     return getJson<Place>(`/places/by-slug/${encodeURIComponent(slug)}`);
+  },
+  topPlaces(limit = 8) {
+    return getJson<TopPlace[]>(`/places/top?limit=${limit}`);
   },
   upcomingToursForPlace(placeId: string, limit = 12) {
     return getJson<Tour[]>(

@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LogOut, Settings, User } from 'lucide-react';
+import { LogOut, Settings, User, UserCircle } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
+import { UserAvatar } from '@/components/engagement/user-avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,19 @@ import {
 export function UserMenu() {
   const auth = useAuth();
   const router = useRouter();
+
+  // Until the session is read from localStorage, render a neutral placeholder
+  // so logged-in users don't see a "Sign in" flash on load / language change.
+  if (!auth.ready) {
+    return (
+      <span
+        aria-hidden
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full"
+      >
+        <span className="size-7 animate-pulse rounded-full bg-surface-strong" />
+      </span>
+    );
+  }
 
   if (!auth.user) {
     return (
@@ -37,14 +51,11 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-surface-strong text-caption-sm text-ink">
-            {(auth.user.fullName ?? '?')
-              .split(' ')
-              .map((s) => s[0])
-              .slice(0, 2)
-              .join('')
-              .toUpperCase()}
-          </span>
+          <UserAvatar
+            name={auth.user.fullName}
+            url={auth.user.avatarUrl ?? null}
+            size="sm"
+          />
           <span className="hidden sm:inline">
             {auth.user.fullName ?? auth.user.phone}
           </span>
@@ -53,10 +64,11 @@ export function UserMenu() {
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
           <Link
-            href="/me"
-            onClick={() => track('nav_click', { target: '/me', label: 'my_trips' })}
+            href="/profile/me"
+            onClick={() => track('nav_click', { target: '/profile/me', label: 'profile' })}
           >
-            My trips
+            <UserCircle className="mr-2 h-4 w-4" />
+            Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

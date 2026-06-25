@@ -1,5 +1,9 @@
+'use client';
+
 import type { Tour } from '@/lib/types';
 import type { Dictionary, Lang } from '@/lib/i18n';
+import { cardGridClass } from '@/lib/card-layout';
+import { useCardLayout } from '@/lib/use-card-layout';
 import { TourCard } from './tour-card';
 
 interface Props {
@@ -10,15 +14,10 @@ interface Props {
   listContext?: string;
 }
 
-const COLS: Record<NonNullable<Props['cols']>, string> = {
-  2: 'sm:grid-cols-2',
-  3: 'sm:grid-cols-2 lg:grid-cols-3',
-  4: 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-};
-
 export function TourGrid({ tours, lang, dict, cols = 4, listContext }: Props) {
+  const layout = useCardLayout();
   return (
-    <div className={`grid grid-cols-1 gap-x-6 gap-y-10 ${COLS[cols]}`}>
+    <div className={cardGridClass(layout, cols)}>
       {tours.map((tour, i) => (
         <TourCard
           key={tour.id}
@@ -26,6 +25,7 @@ export function TourGrid({ tours, lang, dict, cols = 4, listContext }: Props) {
           lang={lang}
           dict={dict}
           priority={i < 4}
+          layout={layout}
           listContext={listContext}
           position={i}
         />

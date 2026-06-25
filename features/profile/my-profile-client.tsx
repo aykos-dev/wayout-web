@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/lib/auth';
+import { useAuth, getStoredToken } from '@/lib/auth';
 import { userApi } from '@/lib/api-client';
 import { UserAvatar } from '@/components/engagement/user-avatar';
-import { LevelBadge } from '@/components/engagement/level-badge';
+import { LevelInfo } from '@/components/engagement/level-info';
 import { XpProgressBar } from '@/components/engagement/xp-progress-bar';
 import { BadgeGrid } from '@/components/engagement/badge-grid';
 import { BadgeShareButton } from '@/components/engagement/badge-share-button';
@@ -19,7 +19,10 @@ export function MyProfileClient() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!auth.token) void auth.requestLogin().catch(() => router.push('/'));
+    // Avoid a spurious login sheet before auth hydrates from localStorage.
+    if (!auth.token && !getStoredToken()) {
+      void auth.requestLogin().catch(() => router.push('/'));
+    }
   }, [auth, router]);
 
   const xp = useQuery({
@@ -52,13 +55,23 @@ export function MyProfileClient() {
         className="rounded-lg border border-hairline bg-canvas p-6 text-center"
       >
         <div className="flex justify-center">
-          <UserAvatar name={auth.user?.fullName ?? null} url={null} size="xl" />
+          <UserAvatar
+            name={auth.user?.fullName ?? null}
+            url={auth.user?.avatarUrl ?? null}
+            size="xl"
+          />
         </div>
         <h1 className="mt-3 text-display-md text-ink">
           {auth.user?.fullName ?? 'You'}
         </h1>
         <div className="mt-2 flex justify-center">
-          <LevelBadge level={xp.data.level} name={xp.data.name} />
+          <LevelInfo
+            level={xp.data.level}
+            name={xp.data.name}
+            xp={xp.data.xp}
+            currentLevelXp={xp.data.currentLevelXp}
+            nextLevelXp={xp.data.nextLevelXp}
+          />
         </div>
         <div className="mt-5">
           <XpProgressBar
@@ -75,7 +88,7 @@ export function MyProfileClient() {
           </Link>
           <Link href="/settings">
             <Button variant="secondary" size="sm">
-              Privacy settings
+              Edit profile
             </Button>
           </Link>
           {auth.user && <BadgeShareButton userId={auth.user.id} />}
@@ -83,9 +96,12 @@ export function MyProfileClient() {
       </motion.section>
 
       <section className="mt-8">
-        <h2 className="mb-4 text-display-sm text-ink">
+        <h2 className="text-display-sm text-ink">
           Badges <span className="text-muted">({earned}/{badges.data?.length ?? 0})</span>
         </h2>
+        <p className="mb-4 mt-0.5 text-caption-sm text-muted">
+          Tap a badge to see what it means and how to earn it.
+        </p>
         {badges.data && <BadgeGrid badges={badges.data} />}
       </section>
     </main>

@@ -2,6 +2,8 @@
 
 import type { Place } from '@/lib/types';
 import type { Dictionary, Lang } from '@/lib/i18n';
+import { cardGridClass } from '@/lib/card-layout';
+import { useCardLayout } from '@/lib/use-card-layout';
 import { PlaceCard } from './place-card';
 
 interface Props {
@@ -13,12 +15,6 @@ interface Props {
   listContext?: string;
 }
 
-const COLS: Record<NonNullable<Props['cols']>, string> = {
-  2: 'sm:grid-cols-2',
-  3: 'sm:grid-cols-2 lg:grid-cols-3',
-  4: 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-};
-
 export function PlaceGrid({
   places,
   lang,
@@ -27,8 +23,9 @@ export function PlaceGrid({
   onHoverId,
   listContext,
 }: Props) {
+  const layout = useCardLayout();
   return (
-    <div className={`grid grid-cols-1 gap-x-6 gap-y-10 ${COLS[cols]}`}>
+    <div className={cardGridClass(layout, cols)}>
       {places.map((place, i) => (
         <div
           key={place.id}
@@ -40,6 +37,7 @@ export function PlaceGrid({
             lang={lang}
             dict={dict}
             priority={i < 4}
+            layout={layout}
             listContext={listContext}
             position={i}
           />
