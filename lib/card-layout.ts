@@ -35,8 +35,8 @@ export function resolveCardLayout(search?: string): CardLayout {
 /** Desktop (sm+) column ramp; mobile behavior is set per-layout below. */
 const DESKTOP_COLS: Record<2 | 3 | 4, string> = {
   2: 'sm:grid-cols-2',
-  3: 'sm:grid-cols-2 lg:grid-cols-3',
-  4: 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+  3: 'sm:grid-cols-2 md:grid-cols-3',
+  4: 'sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
 };
 
 /**
@@ -48,5 +48,5 @@ export function cardGridClass(layout: CardLayout, cols: 2 | 3 | 4 = 4): string {
   const desktop = DESKTOP_COLS[cols];
   if (layout === 'rows') return `flex flex-col gap-4 sm:grid sm:gap-5 ${desktop}`;
   if (layout === 'single') return `grid grid-cols-1 gap-x-6 gap-y-8 ${desktop}`;
-  return `grid grid-cols-2 gap-3 ${desktop}`;
+  return `grid grid-cols-2 gap-3 sm:gap-5 lg:gap-6 ${desktop}`;
 }

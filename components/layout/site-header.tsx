@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LangSwitcher } from './lang-switcher';
 import { UserMenu } from './user-menu';
+import { MobileMenu } from './mobile-menu';
 import type { Dictionary, Lang } from '@/lib/i18n';
 import { t } from '@/lib/i18n';
 import { track } from '@/lib/analytics';
@@ -82,8 +83,11 @@ export function SiteHeader({ lang, dict }: Props) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LangSwitcher current={lang} />
+          <div className="hidden md:block">
+            <LangSwitcher current={lang} />
+          </div>
           <UserMenu />
+          <MobileMenu lang={lang} dict={dict} />
         </div>
       </div>
     </header>

@@ -62,6 +62,7 @@ messages/                   # uz/, en/, ru/
 - `AuthModalHost` is a singleton portal registered once on `AuthProvider` via refs — don't drive it from React state.
 - Translation lookup: `t(dict, 'tours', 'filters.priceMax')` — keys are dotted paths, not flat strings.
 - Header nav (`components/layout/site-header.tsx`): `/`, `/tours`, `/destinations`, with `usePathname().startsWith(...)` for active state. Tagline is "Nature routes" (see line 32).
+- **Feature doc is mandatory upkeep.** `docs/web-features.md` is the living feature catalogue. Any time you add, change, or remove a page/route, nav or footer item, or a cross-cutting system, update that doc in the same change — a web change isn't done until the doc reflects it.
 
 ## External Contracts (consumed)
 

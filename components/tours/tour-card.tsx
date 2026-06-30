@@ -96,11 +96,11 @@ export function TourCard({
           {t(dict, 'tours', 'card.moreDates').replace('{{n}}', String(tour.dates.length - 1))}
         </span>
       )}
-      {place?.lengthKm && !isCompact && (
-        <>
+      {place?.lengthKm && (
+        <span className={isCompact ? 'hidden lg:contents' : 'contents'}>
           <span>·</span>
           <span>{Number(place.lengthKm)} km</span>
-        </>
+        </span>
       )}
     </div>
   );
@@ -142,16 +142,22 @@ export function TourCard({
       {image}
       <div className="flex flex-col gap-1">
         <div className="flex items-start justify-between gap-2">
-          <h3 className={`${isCompact ? 'text-title-sm' : 'text-title-md'} text-ink line-clamp-1`}>
+          <h3 className={`${isCompact ? 'text-title-sm lg:text-title-md' : 'text-title-md'} text-ink line-clamp-1`}>
             {title}
           </h3>
-          {place?.region && !isCompact && (
-            <span className="text-body-sm text-muted line-clamp-1">{place.region}</span>
+          {place?.region && (
+            <span
+              className={`text-body-sm text-muted line-clamp-1 ${isCompact ? 'hidden lg:block' : ''}`}
+            >
+              {place.region}
+            </span>
           )}
         </div>
         {meta}
-        {place?.difficulty && !isCompact && (
-          <DifficultyScale difficulty={place.difficulty} label={difficultyLabel} size="sm" />
+        {place?.difficulty && (
+          <div className={isCompact ? 'hidden lg:block' : ''}>
+            <DifficultyScale difficulty={place.difficulty} label={difficultyLabel} size="sm" />
+          </div>
         )}
         <div className="mt-1">{price}</div>
       </div>

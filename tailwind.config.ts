@@ -3,7 +3,7 @@ import animate from 'tailwindcss-animate';
 
 // Tokens aligned with Outway mobile design system.
 const config: Config = {
-  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,

@@ -37,6 +37,8 @@ export interface Place {
   lengthKm: string | null;
   latitude: string | null;
   longitude: string | null;
+  elevation: number | null;
+  address: string | null;
   mediaUrls: string[] | null;
   gpxTrackUrl: string | null;
 }
