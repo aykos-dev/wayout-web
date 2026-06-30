@@ -66,6 +66,7 @@ jobs:
             docker pull ghcr.io/aykos-dev/wayout-web:latest
             docker stop wayout-web || true
             docker rm wayout-web || true
+            fuser -k 3003/tcp || true
             docker run -d \
               --name wayout-web \
               --restart unless-stopped \
