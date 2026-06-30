@@ -41,7 +41,7 @@ export function LeaderboardClient() {
         </span>
         <h1 className="mt-3 text-display-xl text-ink">Top Travelers</h1>
         <p className="mt-1 text-body-md text-muted">
-          The most active explorers on Outway — ranked by XP and badges earned.
+          The most active explorers on Outway — ranked by XP and badges earned...
         </p>
       </header>
 
